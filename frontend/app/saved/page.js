@@ -1,4 +1,5 @@
 'use client'
+import NomsterLogo from '@/components/NomsterLogo'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePlannerStore } from '@/lib/plannerStore'
@@ -123,9 +124,12 @@ export default function SavedPage() {
         {/* Header */}
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:12 }}>
           <h2 style={{ fontFamily:'Fraunces, serif', fontSize:20, fontWeight:900, color:'var(--navy)' }}>saved recipes 💛</h2>
-          {saved.length > 0 && (
-            <div style={{ background:'var(--navy)', color:'var(--yellow)', padding:'4px 12px', borderRadius:20, fontSize:11, fontWeight:800 }}>{saved.length} saved</div>
-          )}
+          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+            {saved.length > 0 && (
+              <div style={{ background:'var(--navy)', color:'var(--yellow)', padding:'4px 12px', borderRadius:20, fontSize:11, fontWeight:800 }}>{saved.length} saved</div>
+            )}
+            <NomsterLogo size="sm" animate={false}/>
+          </div>
         </div>
 
         {/* Mama */}

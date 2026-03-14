@@ -2,7 +2,7 @@ import uuid
 
 from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
-
+from sqlalchemy.orm import relationship
 from app.db.base import Base
 
 
@@ -23,3 +23,5 @@ class Recipe(Base):
     protein = Column(Integer, nullable=False)
     carbs = Column(Integer, nullable=False)
     fat = Column(Integer, nullable=False)
+    meal_plan_items=relationship("MealPlanItem", back_populates="recipe")
+    recipes=relationship("Recipe", back_populates="meal_plan_items")

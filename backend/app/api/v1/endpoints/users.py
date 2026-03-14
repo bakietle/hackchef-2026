@@ -1,15 +1,15 @@
-from fastapi import APIRouter
+from uuid import uuid4
+
+from fastapi import APIRouter, status
+
 from app.schemas.user import UserCreate, UserResponse
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-@router.post("/", response_model=UserResponse)
+@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(user: UserCreate):
-
-    new_user = {
-        "id": 1,
-        "name": user.name
+    return {
+        "id": uuid4(),
+        "username": user.username,
     }
-
-    return new_user

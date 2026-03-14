@@ -61,6 +61,7 @@ def _normalize_recipe(raw_recipe: dict[str, Any], index: int) -> dict[str, Any]:
         "protein": _safe_int(raw_recipe.get("protein"), 20),
         "carbs": _safe_int(raw_recipe.get("carbs"), 45),
         "fat": _safe_int(raw_recipe.get("fat"), 12),
+        "funfacts": str(raw_recipe.get("funfacts", "")).strip() or None,
     }
 
 
@@ -80,6 +81,7 @@ def _build_demo_recipes(
             "protein": 18,
             "carbs": 52,
             "fat": 14,
+            "funfacts":"Rice is a staple food for more than half of the world's population."
         },
         {
             "base": "Noodle Stir Fry",
@@ -89,6 +91,8 @@ def _build_demo_recipes(
             "protein": 22,
             "carbs": 56,
             "fat": 13,
+            "funfacts":"Noodles are a staple food in many Asian countries."
+
         },
         {
             "base": "Wrap",
@@ -98,6 +102,7 @@ def _build_demo_recipes(
             "protein": 28,
             "carbs": 35,
             "fat": 15,
+            "funfacts":"Wraps are a popular handheld food that can be filled with a variety of ingredients."
         },
         {
             "base": "Potato Skillet",
@@ -107,6 +112,7 @@ def _build_demo_recipes(
             "protein": 16,
             "carbs": 41,
             "fat": 17,
+            "funfacts":"Potatoes are the world's fourth-largest food crop, following rice, wheat, and maize."
         },
         {
             "base": "Pasta",
@@ -116,6 +122,7 @@ def _build_demo_recipes(
             "protein": 19,
             "carbs": 68,
             "fat": 16,
+            "funfacts":"Pasta is a traditional Italian dish that has become popular worldwide."
         },
     ]
 
@@ -132,6 +139,7 @@ def _build_demo_recipes(
                 "protein": template["protein"],
                 "carbs": template["carbs"],
                 "fat": template["fat"],
+                "funfacts":template["funfacts"],
             }
         )
 
@@ -208,6 +216,7 @@ def _save_recipes_to_db(
             protein=recipe_data["protein"],
             carbs=recipe_data["carbs"],
             fat=recipe_data["fat"],
+            funfacts=recipe_data.get("funfacts"),
         )
         db.add(recipe_row)
         recipe_rows.append(recipe_row)

@@ -1,8 +1,19 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import auth,weekly_plans, preferences
+
+from app.api.v1.endpoints import (
+    meal_generation,
+    meal_plans,
+    recipes,
+    saved_recipes,
+    shopping,
+    users,
+)
 
 api_router = APIRouter()
 
-api_router.include_router(auth.router, prefix="/auth", tags=["Auth"])
-api_router.include_router(weekly_plans.router, tags=["Weekly Plans"])
-api_router.include_router(preferences.router, tags=["Preferences"])
+api_router.include_router(users.router)
+api_router.include_router(meal_generation.router)
+api_router.include_router(recipes.router)
+api_router.include_router(meal_plans.router)
+api_router.include_router(shopping.router)
+api_router.include_router(saved_recipes.router)

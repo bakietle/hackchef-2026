@@ -21,4 +21,4 @@ class MealPlanItem(Base):
     meal_slot = Column(String, nullable=False)   # breakfast, lunch, dinner, etc.
     planned_date = Column(Date, nullable=False)
     meal_plan = relationship("MealPlan", back_populates="items")
-    recipe = relationship("Recipe")
+    recipe = relationship("Recipe", back_populates="meal_plan_items")

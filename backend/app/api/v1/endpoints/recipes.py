@@ -130,3 +130,37 @@ def get_recipes(
             for recipe in recipes
         ],
     }
+
+@router.get("/{recipe_id}")
+def get_recipe_detail(
+    recipe_id: UUID,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    recipe = (
+        db.query(Recipe)
+        .join(MealPlanRequest, Recipe.request_id == MealPlanRequest.id)
+        .filter(
+            Recipe.id == recipe_id,
+            MealPlanRequest.user_id == user.id,
+        )
+        .first()
+    )
+
+    if not recipe:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Recipe not found for this user",
+        )
+
+    return {
+        "id": str(recipe.id),
+        "request_id": str(recipe.request_id),
+        "title": recipe.title,
+        "ingredients": recipe.ingredients,
+        "steps": recipe.steps,
+        "calories": recipe.calories,
+        "protein": recipe.protein,
+        "carbs": recipe.carbs,
+        "fat": recipe.fat,
+    }

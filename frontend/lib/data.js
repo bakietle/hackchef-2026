@@ -1,11 +1,14 @@
 // ─── WEEK MODES ───────────────────────────────────────────────
+
 export const WEEK_MODES = [
-  { key:'glow',  name:'Glow-Up',     emoji:'✨', color:'#F5C842', desc:'balanced, feel good vibes'    },
-  { key:'beast', name:'Beast Mode',  emoji:'💪', color:'#FF6B5B', desc:'high protein, gym fuel'        },
-  { key:'green', name:'Green Queen', emoji:'🥗', color:'#7ED8A4', desc:'plant-based, clean eating'     },
-  { key:'snack', name:'Snack Attack',emoji:'⚡', color:'#C8F135', desc:'quick bites, 10 min meals'     },
-  { key:'fancy', name:'Fancy Era',   emoji:'👑', color:'#B8A0F8', desc:'elevated, impress yourself'    },
-]
+  { key:'glow',  name:'Glow-Up',      emoji:'✨', color:'#F5C842', desc:'balanced, feel-good vibes'        },
+  { key:'beast', name:'Beast Mode',   emoji:'💪', color:'#FF6B5B', desc:'high protein, gym fuel'          },
+  { key:'plant', name:'Plant Power',  emoji:'🌱', color:'#7ED8A4', desc:'plant-based, clean & energizing' },
+  { key:'quick', name:'Quick Fuel',   emoji:'⚡', color:'#C8F135', desc:'fast meals, ready in 10 mins'    },
+  { key:'fancy', name:'Rich Kid',    emoji:'👑', color:'#B8A0F8', desc:'elevated, impress yourself'      },
+  { key:'exam',  name:'Academic Weapon',    emoji:'📚', color:'#AAAAAA', desc:'focus, brain fuel'               },
+];
+
 
 // ─── RECIPES ──────────────────────────────────────────────────
 export const RECIPES = [
@@ -157,11 +160,31 @@ export const FOOD_TIPS = [
   { emoji:'🥚', tip:'Eggs stored with the pointy end down last longer — keeps the yolk centred' },
   { emoji:'🧅', tip:'Keep onions and potatoes separate — onions release gas that makes potatoes sprout' },
   { emoji:'🍄', tip:'Store mushrooms in a paper bag, not plastic — they need to breathe or they get slimy' },
+  { emoji:'🥬', tip:'Leafy greens last longer with a paper towel in the bag' },
+  { emoji:'🍅', tip:'Never refrigerate tomatoes — keep them on the counter' },
+  { emoji:'🥑', tip:'Ripen avocados faster by storing with a banana' },
+  { emoji:'🧄', tip:'Store garlic in a dry dark spot, not the fridge' },
+  { emoji:'🍋', tip:'Freeze lemon juice in cubes for quick cooking' },
+  { emoji:'🌿', tip:'Store herbs like flowers — stems in water' },
+  { emoji:'🍞', tip:'Freeze bread early to prevent it going stale' },
+  { emoji:'🥚', tip:'Eggs last longer stored pointy side down' },
+  { emoji:'🧅', tip:'Keep onions and potatoes separate to prevent sprouting' },
+  { emoji:'🍄', tip:'Store mushrooms in paper bags so they can breathe' },
+  { emoji:'🍚', tip:'Cooked rice should go in the fridge within 2 hours' },
+  { emoji:'🥦', tip:'Wrap broccoli loosely in foil to keep it fresh longer' },
+  { emoji:'🥕', tip:'Cut carrot tops before storing to prevent moisture loss' },
+  { emoji:'🧀', tip:'Wrap cheese in parchment paper to prevent sweating' },
+  { emoji:'🍎', tip:'Apples speed up ripening — keep them away from other fruits' },
+  { emoji:'🥬', tip:'Dry lettuce well before storing to avoid soggy leaves' },
+  { emoji:'🍗', tip:'Freeze cooked chicken if you won’t eat it in 3 days' },
+  { emoji:'🥘', tip:'Most leftovers stay safe in the fridge for 3–4 days' },
+  { emoji:'🥔', tip:'Store potatoes in a cool dark place, not the fridge' },
+  { emoji:'🧊', tip:'Freeze leftover veggies before they spoil' },
 ]
 
 // ─── NOTIFICATION MESSAGES ─────────────────────────────────────
 export const NOTIF_MSGS = [
-  'are u eating instant noodles AGAIN?? mama is NOT okay with this 😤',
+   'are u eating instant noodles AGAIN?? mama is NOT okay with this 😤',
   "it's dinner time bestie~ go cook something real pls 🍳",
   "ur lunch slot is empty... the fridge isn't gonna cook itself babes",
   'no cap eating cereal for every meal is NOT it. mama made u a plan 💅',
@@ -171,6 +194,16 @@ export const NOTIF_MSGS = [
   'bestie ur protein intake today was probably ZERO. beast mode requires effort 💪',
   'mama checked ur plan and ur literally surviving on vibes rn 😭',
   "3 days in a row of takeaway?? ur wallet AND ur body both crying rn 💸",
+  'psst… your fridge has ingredients waiting. go cook something 👩‍🍳',
+  'exam brain needs fuel — go eat something real 🧠',
+  'hydration check bestie 💧 water first, coffee later',
+  'mama believes in you… but also believes you should eat vegetables 🥦',
+  'gym mode but no protein?? mama confused rn 💪',
+  'lazy mode detected… but at least eat something healthy 😌',
+  'quick reminder: food = energy = better grades 📚',
+  'your future self will thank you for cooking tonight ✨',
+  'fridge audit time — eat the leftovers before they revolt 🍱',
+  'mama saw your grocery list… proud of you for trying 🥹',
 ]
 
 // ─── BADGE DEFINITIONS ─────────────────────────────────────────

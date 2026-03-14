@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.endpoints.home import router as home_router
 from app.api.v1.endpoints.meal_plan_requests import router as meal_plan_requests_router
 from app.api.v1.endpoints.recipes import router as recipes_router
@@ -17,3 +17,11 @@ app.include_router(recipes_router)
 app.include_router(meal_plans_router)
 app.include_router(shopping_router)
 app.include_router(saved_recipes_router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # for hackathon only
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)

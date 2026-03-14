@@ -11,8 +11,9 @@ class MealPlanRequest(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
-    budget_per_meal = Column(Float, nullable=False)
-    time_per_meal = Column(Integer, nullable=False)
-    dietary = Column(Text, nullable=False)
-    mode = Column(Text, nullable=False)
+    budget_per_meal = Column(Float, nullable=True)
+    time_per_meal = Column(Integer, nullable=True)
+    cuisine_type = Column(Text, nullable=True)
+    dietary = Column(Text, nullable=True)
+    mode = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)

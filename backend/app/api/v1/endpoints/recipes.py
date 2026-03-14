@@ -8,6 +8,7 @@ from app.deps import get_current_user
 from app.models.users import User
 from app.models.meal_plan_requests import MealPlanRequest
 from app.models.recipes import Recipe
+from app.services.ai_recipe_service import generate_and_save_recipes
 
 router = APIRouter(prefix="/recipes", tags=["Recipes"])
 
@@ -33,39 +34,10 @@ def generate_recipes(
             detail="Meal plan request not found",
         )
 
-    # Optional: clear previously generated recipes for this request
-    db.query(Recipe).filter(Recipe.request_id == request_id).delete(synchronize_session=False)
-
-    mode_label = request_row.mode.replace("_", " ").title()
-
-    for i in range(35):
-        recipe = Recipe(
-            request_id=request_id,
-            title=f"{mode_label} Recipe {i + 1}",
-            ingredients=[
-                "ingredient1",
-                "ingredient2",
-                "ingredient3",
-            ],
-            steps=[
-                "Step 1: Prepare ingredients",
-                "Step 2: Cook everything",
-                "Step 3: Serve and enjoy",
-            ],
-            calories=350 + i,
-            protein=20,
-            carbs=40,
-            fat=10,
-        )
-        db.add(recipe)
-
-    db.commit()
-
-    recipes = (
-        db.query(Recipe)
-        .filter(Recipe.request_id == request_id)
-        .order_by(Recipe.title)
-        .all()
+    recipes = generate_and_save_recipes(
+        db=db,
+        request_row=request_row,
+        recipe_count=35,
     )
 
     return {
@@ -110,7 +82,6 @@ def get_recipes(
     recipes = (
         db.query(Recipe)
         .filter(Recipe.request_id == request_id)
-        .order_by(Recipe.title)
         .all()
     )
 
@@ -130,6 +101,7 @@ def get_recipes(
             for recipe in recipes
         ],
     }
+
 
 @router.get("/{recipe_id}")
 def get_recipe_detail(

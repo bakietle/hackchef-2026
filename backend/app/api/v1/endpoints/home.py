@@ -19,6 +19,33 @@ FUN_QUOTES = [
     "The fridge is not a mystery box today.",
 ]
 
+AVAILABLE_MODES = [
+    {
+        "name": "Glow-up",
+        "description": "balanced, feel good vibe",
+    },
+    {
+        "name": "Plant Power",
+        "description": "plant-based, clean eating",
+    },
+    {
+        "name": "Rich Kid",
+        "description": "elevated, impress",
+    },
+    {
+        "name": "Beast Mode",
+        "description": "high protein, gym fuel",
+    },
+    {
+        "name": "Snack Attack",
+        "description": "quick bites",
+    },
+    {
+        "name": "Academic Weapon",
+        "description": "brain food",
+    },
+]
+
 
 @router.get("/")
 def get_home(
@@ -37,6 +64,7 @@ def get_home(
     if not meal_plan:
         return {
             "quote": quote,
+            "available_modes": AVAILABLE_MODES,
             "meal_plan": None,
             "items": [],
         }
@@ -68,6 +96,7 @@ def get_home(
 
     return {
         "quote": quote,
+        "available_modes": AVAILABLE_MODES,
         "meal_plan": {
             "id": str(meal_plan.id),
             "start_date": meal_plan.start_date.isoformat(),

@@ -52,6 +52,7 @@ def generate_recipes(
                 "protein": recipe.protein,
                 "carbs": recipe.carbs,
                 "fat": recipe.fat,
+                "funfacts":recipe.funfacts,
             }
             for recipe in recipes
         ],
@@ -97,6 +98,7 @@ def get_recipes(
                 "protein": recipe.protein,
                 "carbs": recipe.carbs,
                 "fat": recipe.fat,
+                "funfacts":recipe.funfacts,
             }
             for recipe in recipes
         ],
@@ -135,4 +137,5 @@ def get_recipe_detail(
         "protein": recipe.protein,
         "carbs": recipe.carbs,
         "fat": recipe.fat,
+        "funfacts":recipe.funfacts,
     }

@@ -24,3 +24,4 @@ class Recipe(Base):
     carbs = Column(Integer, nullable=False)
     fat = Column(Integer, nullable=False)
     meal_plan_items=relationship("MealPlanItem", back_populates="recipe")
+    funfacts=Column(Text, nullable=True)

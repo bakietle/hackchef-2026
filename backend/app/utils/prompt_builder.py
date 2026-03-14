@@ -15,6 +15,7 @@ User requirements:
 - Dietary: {request_row.dietary}
 - Mode: {request_row.mode}
 - Cuisine type: {request_row.cuisine_type}
+
 Rules:
 - Recipes must be realistic, and student-friendly.
 -The simplicity or complexityof the dishes depends on user's selected mode and budget.
@@ -24,6 +25,7 @@ Rules:
 - Ingredients must be short strings only.
 - Steps must be short strings only.
 - Nutrition values must be integers.
+-Fun facts should be fun and interesting, but also related to the recipe.
 
 Return ONLY valid JSON.
 Do NOT return markdown.
@@ -39,6 +41,8 @@ Each object must have exactly these keys:
 - protein
 - carbs
 - fat
+- funfacts
+
 
 Example of ONE recipe object:
 {{
@@ -48,6 +52,8 @@ Example of ONE recipe object:
   "calories": 450,
   "protein": 22,
   "carbs": 55,
-  "fat": 12
+  "fat": 12,
+  "funfacts": "Tofu is made from soybeans and is a great source of plant-based protein."
+
 }}
 """.strip()

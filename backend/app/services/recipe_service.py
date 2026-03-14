@@ -22,6 +22,7 @@ def save_generated_recipes(
             protein=item.get("protein", 0),
             carbs=item.get("carbs", 0),
             fat=item.get("fat", 0),
+            funfacts=item.get("funfacts"),
         )
         db.add(recipe)
         saved_recipes.append(recipe)

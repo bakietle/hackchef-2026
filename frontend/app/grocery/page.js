@@ -94,8 +94,8 @@ export default function GroceryPage() {
         {/* Total card */}
         <div style={{ background:allDone?'var(--mint-l)':'var(--navy)', border:'2px solid var(--navy)', borderRadius:20, padding:18, marginBottom:14, boxShadow:'var(--shadow-md)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
           <div>
-            <div style={{ fontSize:10, fontWeight:800, color:allDone?'var(--navy)':'rgba(245,200,66,0.7)', textTransform:'uppercase', letterSpacing:1, marginBottom:3 }}>{allDone?'all done! 🎉':'estimated total'}</div>
-            <div style={{ fontFamily:'Fraunces, serif', fontSize:30, fontWeight:900, color:allDone?'var(--navy)':mode.color }}>${remaining.toFixed(2)}</div>
+            <div style={{ fontSize:10, fontWeight:800, color:allDone?'var(--navy)':'rgba(245,200,66,0.7)', textTransform:'uppercase', letterSpacing:1, marginBottom:3 }}>{allDone?'all done! 🎉':'this week\'s list'}</div>
+            <div style={{ fontFamily:'Fraunces, serif', fontSize:30, fontWeight:900, color:allDone?'var(--navy)':mode.color }}>{items.length} items</div>
           </div>
           <div style={{ textAlign:'right' }}>
             <div style={{ fontFamily:'Fraunces, serif', fontSize:22, fontWeight:900, color:allDone?'var(--navy)':'var(--white)' }}>{doneCount}<span style={{ fontSize:13, opacity:.5 }}>/{items.length}</span></div>
@@ -108,11 +108,10 @@ export default function GroceryPage() {
           <div style={{ height:'100%', background:mode.color, width:`${items.length?(doneCount/items.length)*100:0}%`, transition:'width .4s ease' }}/>
         </div>
 
-        {/* ── AUTO CART BUTTON ── */}
-        <button onClick={() => router.push('/mama?to=autocart')}
-          style={{ width:'100%', padding:14, borderRadius:12, border:'2px solid var(--navy)', background:'var(--navy)', color:'var(--yellow)', fontSize:13, fontWeight:900, cursor:'pointer', fontFamily:'Nunito, sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginBottom:14, boxShadow:'var(--shadow-md)' }}
-          onMouseDown={e=>{e.currentTarget.style.transform='translate(2px,3px)';e.currentTarget.style.boxShadow='0 0 0 var(--navy)'}}
-          onMouseUp={e=>{e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='var(--shadow-md)'}}>
+        {/* ── AUTO CART BUTTON — coming soon ── */}
+        <button onClick={() => router.push('/autocart')}
+          style={{ width:'100%', padding:14, borderRadius:12, border:'2px solid var(--border)', background:'var(--white)', color:'var(--muted)', fontSize:13, fontWeight:900, cursor:'pointer', fontFamily:'Nunito, sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginBottom:14, position:'relative', overflow:'hidden' }}> 
+          <span style={{ position:'absolute', top:8, right:10, background:'var(--navy)', color:'var(--yellow)', fontSize:8, fontWeight:900, padding:'2px 7px', borderRadius:6, letterSpacing:1 }}>SOON</span>
           🛒 auto-add to Woolworths / Coles
         </button>
 
@@ -138,7 +137,6 @@ export default function GroceryPage() {
               <div style={{ fontSize:13, fontWeight:700, color:'var(--navy)', textDecoration:item.done?'line-through':'none' }}>{item.n}</div>
               {item.tag && <div style={{ fontSize:10, color:'var(--muted)', fontWeight:600, marginTop:1 }}>{item.tag}</div>}
             </div>
-            <div style={{ fontFamily:'Fraunces, serif', fontSize:13, fontWeight:900, color:item.done?'var(--muted)':'var(--navy)' }}>${item.p.toFixed(2)}</div>
           </div>
         ))}
 
@@ -159,7 +157,7 @@ export default function GroceryPage() {
           </div>
         </div>
 
-        {/* Supermarket links */}
+        
         <div style={{ fontSize:10, fontWeight:800, color:'var(--muted)', textTransform:'uppercase', letterSpacing:1, marginBottom:8 }}>compare prices</div>
         <div style={{ display:'flex', gap:8, marginBottom:16 }}>
           {[['Woolworths','#00703F','https://www.woolworths.com.au'],['Coles','#E31837','https://www.coles.com.au'],['Aldi','#003082','https://www.aldi.com.au']].map(([name,bg,url]) => (

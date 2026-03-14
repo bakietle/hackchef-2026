@@ -16,3 +16,9 @@ class SavedRecipeResponse(BaseModel):
     user_id: UUID
     recipe_id: UUID
     created_at: datetime
+
+
+class SaveRecipeRequest(BaseModel):
+    recipe_id: UUID
+
+

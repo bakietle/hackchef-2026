@@ -12,8 +12,11 @@ def generate_recipes(request: MealGenerationRequest):
 
     for i in range(35):
         recipes.append({
-            "id": i,
-            "name": f"Recipe {i}"
+            "id": i+1,
+            "name": f"Recipe {i+1}",
+            "nutrition_summary": "High protein, balanced carbs",
+            "ingredients": "Eggs, rice, chicken, vegetables",
+            "instructions": "Cook ingredients and serve"
         })
 
     return {

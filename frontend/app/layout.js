@@ -1,19 +1,16 @@
-import { Geist } from "next/font/google";
-import "./globals.css";
-
-const geist = Geist({ subsets: ["latin"] });
-
+ 
+import './globals.css'
+ 
 export const metadata = {
-  title: "HackChef 🍳",
-  description: "ur meal mama",
-};
-
+  title: 'HackChef — your meal mama',
+  description: 'AI-powered weekly meal planning for students',
+}
+ 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={geist.className}>
-        {children}
-      </body>
+    <html lang='en'>
+      <body>{children}</body>
     </html>
-  );
+  )
 }
+ 

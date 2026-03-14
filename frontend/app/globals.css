@@ -1,26 +1,76 @@
-@import "tailwindcss";
-
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+ 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cream: #FFF6F1;
+  --peach: #FF9F80;
+  --peach2: #FF7A55;
+  --peach-l: #FFF0EB;
+  --mint: #9ED8B4;
+  --mint-l: #EAF7F0;
+  --sky: #A7C7E7;
+  --sky-l: #EAF4FB;
+  --dark: #333333;
+  --muted: #aaaaaa;
+  --border: #F0E0D8;
+  --yellow: #FFD166;
+  --pink: #F472B6;
 }
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+ 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Nunito', sans-serif; background: var(--cream); }
+ 
+/* MAMA ANIMATIONS */
+@keyframes mamaFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@keyframes mamaWave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(28deg); }
+  75% { transform: rotate(-10deg); }
 }
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes mamaBlink {
+  0%, 85%, 100% { transform: scaleY(1); }
+  92% { transform: scaleY(0.05); }
 }
+@keyframes mamaCook {
+  0%, 100% { transform: translateY(0) rotate(-0.8deg); }
+  50% { transform: translateY(-5px) rotate(0.8deg); }
+}
+@keyframes mamaStir {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(20deg); }
+}
+@keyframes steamRise {
+  0%, 100% { opacity: 0.7; transform: translateY(0) scaleX(1); }
+  60% { opacity: 0; transform: translateY(-14px) scaleX(1.5); }
+}
+@keyframes mamaShock {
+  0%, 100% { transform: rotate(0); }
+  20% { transform: rotate(-4deg) translateX(-3px); }
+  40% { transform: rotate(4deg) translateX(3px); }
+}
+@keyframes mamaJump {
+  0%, 100% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-15px) scale(1.06); }
+  65% { transform: translateY(-4px) scale(0.97); }
+}
+@keyframes sparkPop {
+  0% { transform: scale(0) rotate(0); opacity: 1; }
+  100% { transform: scale(1.4) rotate(200deg); opacity: 0; }
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-10px) rotate(0); opacity: 1; }
+  100% { transform: translateY(110px) rotate(500deg); opacity: 0; }
+}
+@keyframes slotPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.18); }
+  70% { transform: scale(0.96); }
+  100% { transform: scale(1.06); }
+}
+ 
+.slot-pop { animation: slotPop 0.45s cubic-bezier(.34,1.56,.64,1) forwards; }
+.mama-float { animation: mamaFloat 3s ease-in-out infinite; }
+.mama-cook { animation: mamaCook 1.2s ease-in-out infinite; }
+ 

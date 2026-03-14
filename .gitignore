@@ -8,12 +8,6 @@ backend/venv/
 backend/__pycache__/
 backend/*.pyc
 
-# environment files
-.env
-frontend/.env
-frontend/.env.local
-backend/.env
-
 # editor / OS files
 .vscode/
 .DS_Store

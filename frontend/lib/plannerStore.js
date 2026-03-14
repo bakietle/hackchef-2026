@@ -1,38 +1,87 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { RECIPES } from './data'
 
-export const usePlannerStore = create((set, get) => ({
-  userName:     '',
-  weekMode:     'glow',
-  recipes:      [],
-  assigned:     {},
-  savedRecipes: [],
-  planDone:     false,
-  badges:       [],
-  moodLog:      {},
+export const usePlannerStore = create(
+  persist(
+    (set, get) => ({
+      // ── User ──
+      userName: '',
+      setUserName: (name) => set({ userName: name }),
 
-  setUserName:  (name)    => set({ userName: name }),
-  setWeekMode:  (mode)    => set({ weekMode: mode }),
-  setMealPlan:  (recipes) => set({ recipes }),
-  setPlanDone:  (v)       => set({ planDone: v }),
+      // ── Week mode ──
+      weekMode: 'glow',
+      setWeekMode: (mode) => set({ weekMode: mode }),
 
-  assignMeal: (day, slotId, recipe) => set(state => ({
-    assigned: { ...state.assigned, [day]: { ...state.assigned[day], [slotId]: recipe } }
-  })),
-  removeMeal: (day, slotId) => set(state => {
-    const d = { ...state.assigned[day] }; delete d[slotId]
-    return { assigned: { ...state.assigned, [day]: d } }
-  }),
+      // ── Recipes (generated) ──
+      recipes: [],
+      setMealPlan: (recipes) => set({ recipes }),
 
-  toggleSaved: (recipeId) => set(state => {
-    const saved = state.savedRecipes.includes(recipeId)
-      ? state.savedRecipes.filter(id => id !== recipeId)
-      : [...state.savedRecipes, recipeId]
-    return { savedRecipes: saved }
-  }),
+      // ── Planner: { 'Monday': { breakfast: recipeObj, lunch: recipeObj, ... } } ──
+      assigned: {},
+      assignMeal: (day, slot, recipe) =>
+        set(s => ({
+          assigned: {
+            ...s.assigned,
+            [day]: { ...(s.assigned[day] || {}), [slot]: recipe }
+          }
+        })),
+      removeMeal: (day, slot) =>
+        set(s => {
+          const d = { ...(s.assigned[day] || {}) }
+          delete d[slot]
+          return { assigned: { ...s.assigned, [day]: d } }
+        }),
+      clearWeek: () => set({ assigned: {} }),
 
-  setMood: (day, mood) => set(state => ({
-    moodLog: { ...state.moodLog, [day]: mood }
-  })),
+      // ── Saved recipes ──
+      savedRecipes: [],
+      toggleSaved: (id) =>
+        set(s => ({
+          savedRecipes: s.savedRecipes.includes(id)
+            ? s.savedRecipes.filter(x => x !== id)
+            : [...s.savedRecipes, id]
+        })),
 
-  reset: () => set({ recipes:[], assigned:{}, planDone:false }),
-}))
+      // ── Shopping list ──
+      shopItems: [],
+      setShopItems: (items) => set({ shopItems: items }),
+      toggleShopItem: (id) =>
+        set(s => ({
+          shopItems: s.shopItems.map(i => i.id === id ? { ...i, done: !i.done } : i)
+        })),
+
+      // ── Profile / stats ──
+      stats: {
+        mealsCooked: 0,
+        weeksPlanned: 0,
+        moneySaved: 0,
+        cuisinesTried: [],
+      },
+      incrementMealsCooked: () =>
+        set(s => ({ stats: { ...s.stats, mealsCooked: s.stats.mealsCooked + 1 } })),
+      completeWeek: () =>
+        set(s => ({ stats: { ...s.stats, weeksPlanned: s.stats.weeksPlanned + 1 } })),
+
+      // ── Dietary preferences ──
+      dietary: [],
+      setDietary: (d) => set({ dietary: d }),
+
+      // ── Notification seen ──
+      notifSeen: false,
+      setNotifSeen: () => set({ notifSeen: true }),
+    }),
+    {
+      name: 'nomster-storage',
+      partialize: (state) => ({
+        userName: state.userName,
+        weekMode: state.weekMode,
+        assigned: state.assigned,
+        savedRecipes: state.savedRecipes,
+        shopItems: state.shopItems,
+        stats: state.stats,
+        dietary: state.dietary,
+      }),
+    }
+  )
+)

@@ -24,4 +24,3 @@ class Recipe(Base):
     carbs = Column(Integer, nullable=False)
     fat = Column(Integer, nullable=False)
     meal_plan_items=relationship("MealPlanItem", back_populates="recipe")
-    recipes=relationship("Recipe", back_populates="meal_plan_items")

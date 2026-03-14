@@ -147,26 +147,6 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        {/* ── DIETARY ── */}
-        <div style={{ marginBottom:14 }}>
-          <div style={{ fontSize:10, fontWeight:800, color:'var(--muted)', textTransform:'uppercase', letterSpacing:1, marginBottom:10 }}>dietary preferences</div>
-          <div style={{ display:'flex', flexWrap:'wrap', gap:7 }}>
-            {DIETARY_OPTIONS.map(d => {
-              const active = (dietary||[]).includes(d) || ((!dietary||dietary.length===0) && d==='No restrictions')
-              return (
-                <button key={d} onClick={() => toggleDietary(d)} style={{
-                  padding:'7px 13px', borderRadius:20, fontSize:12, fontWeight:700,
-                  fontFamily:'Nunito, sans-serif', cursor:'pointer',
-                  border:`2px solid ${active?'var(--navy)':'var(--border)'}`,
-                  background:active?'var(--mint-l)':'var(--white)',
-                  color:active?'var(--navy)':'var(--muted)',
-                  boxShadow:active?'var(--shadow-sm)':'none',
-                }}>{d}</button>
-              )
-            })}
-          </div>
-        </div>
-
         {/* ── BADGES ── */}
         <div style={{ marginBottom:14 }}>
           <div style={{ fontSize:10, fontWeight:800, color:'var(--muted)', textTransform:'uppercase', letterSpacing:1, marginBottom:10 }}>

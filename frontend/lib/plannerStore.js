@@ -1,29 +1,38 @@
 import { create } from 'zustand'
- 
-export const usePlannerStore = create((set) => ({
-  userName: '',
-  recipes: [],        // list of Recipe objects from Claude
-  assigned: {},       // { 'Monday': { breakfast: Recipe, lunch: Recipe } }
-  shoppingList: [],
- 
-  setUserName: (name) => set({ userName: name }),
- 
-  setMealPlan: (recipes) => set({ recipes }),
- 
-  assignMeal: (day, slot, recipe) => set((state) => ({
-    assigned: {
-      ...state.assigned,
-      [day]: { ...state.assigned[day], [slot]: recipe }
-    }
+
+export const usePlannerStore = create((set, get) => ({
+  userName:     '',
+  weekMode:     'glow',
+  recipes:      [],
+  assigned:     {},
+  savedRecipes: [],
+  planDone:     false,
+  badges:       [],
+  moodLog:      {},
+
+  setUserName:  (name)    => set({ userName: name }),
+  setWeekMode:  (mode)    => set({ weekMode: mode }),
+  setMealPlan:  (recipes) => set({ recipes }),
+  setPlanDone:  (v)       => set({ planDone: v }),
+
+  assignMeal: (day, slotId, recipe) => set(state => ({
+    assigned: { ...state.assigned, [day]: { ...state.assigned[day], [slotId]: recipe } }
   })),
- 
-  removeMeal: (day, slot) => set((state) => {
-    const dayData = { ...state.assigned[day] }
-    delete dayData[slot]
-    return { assigned: { ...state.assigned, [day]: dayData } }
+  removeMeal: (day, slotId) => set(state => {
+    const d = { ...state.assigned[day] }; delete d[slotId]
+    return { assigned: { ...state.assigned, [day]: d } }
   }),
- 
-  setShoppingList: (list) => set({ shoppingList: list }),
- 
-  reset: () => set({ recipes: [], assigned: {}, shoppingList: [] })
+
+  toggleSaved: (recipeId) => set(state => {
+    const saved = state.savedRecipes.includes(recipeId)
+      ? state.savedRecipes.filter(id => id !== recipeId)
+      : [...state.savedRecipes, recipeId]
+    return { savedRecipes: saved }
+  }),
+
+  setMood: (day, mood) => set(state => ({
+    moodLog: { ...state.moodLog, [day]: mood }
+  })),
+
+  reset: () => set({ recipes:[], assigned:{}, planDone:false }),
 }))

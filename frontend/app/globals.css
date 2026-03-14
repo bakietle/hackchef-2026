@@ -1,76 +1,214 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
- 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&display=swap');
+
+/*
+  HACKCHEF — Retro Foodie Palette
+  Primary:  Yolk Yellow #F5C842
+  Dark:     Navy #1B2B4B
+  Accents:  Lime Neon #C8F135, Mint #7ED8A4, Coral #FF6B5B
+  Pastel:   Butter #FFF8DC, Blush #FFE8D6
+*/
+
 :root {
-  --cream: #FFF6F1;
-  --peach: #FF9F80;
-  --peach2: #FF7A55;
-  --peach-l: #FFF0EB;
-  --mint: #9ED8B4;
-  --mint-l: #EAF7F0;
-  --sky: #A7C7E7;
-  --sky-l: #EAF4FB;
-  --dark: #333333;
-  --muted: #aaaaaa;
-  --border: #F0E0D8;
-  --yellow: #FFD166;
-  --pink: #F472B6;
+  /* ── CORE ── */
+  --navy:      #1B2B4B;
+  --navy2:     #2C4270;
+  --yellow:    #F5C842;
+  --yellow2:   #E8B820;
+  --yellow-l:  #FFF8DC;
+  --yellow-ll: #FFFDF0;
+  --lime:      #C8F135;
+  --lime-l:    #F0FAC0;
+  --mint:      #7ED8A4;
+  --mint-l:    #E0F5EC;
+  --coral:     #FF6B5B;
+  --coral-l:   #FFE8E5;
+  --cream:     #FEF9EE;
+  --paper:     #F7F0DC;
+  --ink:       #1B2B4B;
+  --muted:     #7A8A9A;
+  --border:    #E8DFC4;
+  --white:     #FFFFFF;
+
+  /* ── MODE COLORS ── */
+  --mode-glow:   #F5C842;  /* Glow-Up: yellow */
+  --mode-beast:  #FF6B5B;  /* Beast Mode: coral */
+  --mode-green:  #7ED8A4;  /* Green Queen: mint */
+  --mode-snack:  #C8F135;  /* Snack Attack: lime */
+  --mode-fancy:  #B8A0F8;  /* Fancy: lavender */
+
+  /* ── ACTIVE MODE (overridden per mode) ── */
+  --mode-color:  var(--yellow);
+  --mode-light:  var(--yellow-l);
+
+  /* ── SHADOWS ── */
+  --shadow-sm: 2px 3px 0px var(--navy);
+  --shadow-md: 3px 5px 0px var(--navy);
+  --shadow-lg: 5px 8px 0px var(--navy);
+  --shadow-yellow: 3px 5px 0px var(--yellow2);
 }
- 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Nunito', sans-serif; background: var(--cream); }
- 
-/* MAMA ANIMATIONS */
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { display: none; }
+* { scrollbar-width: none; }
+
+/* ── TYPOGRAPHY ── */
+.display { font-family: 'Fraunces', serif; }
+
+/* ── MAMA ANIMATIONS ── */
 @keyframes mamaFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
 }
 @keyframes mamaWave {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(28deg); }
-  75% { transform: rotate(-10deg); }
+  0%,100% { transform: rotate(0deg); }
+  30% { transform: rotate(26deg); }
+  70% { transform: rotate(-12deg); }
 }
 @keyframes mamaBlink {
-  0%, 85%, 100% { transform: scaleY(1); }
+  0%,86%,100% { transform: scaleY(1); }
   92% { transform: scaleY(0.05); }
 }
 @keyframes mamaCook {
-  0%, 100% { transform: translateY(0) rotate(-0.8deg); }
-  50% { transform: translateY(-5px) rotate(0.8deg); }
+  0%,100% { transform: translateY(0) rotate(-0.5deg); }
+  50%      { transform: translateY(-5px) rotate(0.5deg); }
 }
 @keyframes mamaStir {
-  0%, 100% { transform: rotate(-15deg); }
-  50% { transform: rotate(20deg); }
+  0%,100% { transform: rotate(-14deg); }
+  50%      { transform: rotate(20deg); }
 }
 @keyframes steamRise {
-  0%, 100% { opacity: 0.7; transform: translateY(0) scaleX(1); }
-  60% { opacity: 0; transform: translateY(-14px) scaleX(1.5); }
+  0%,100% { opacity:.55; transform:translateY(0) scaleX(1); }
+  55%      { opacity:0;   transform:translateY(-13px) scaleX(1.5); }
 }
 @keyframes mamaShock {
-  0%, 100% { transform: rotate(0); }
-  20% { transform: rotate(-4deg) translateX(-3px); }
-  40% { transform: rotate(4deg) translateX(3px); }
+  0%,100% { transform:rotate(0); }
+  20% { transform:rotate(-3deg) translateX(-2px); }
+  40% { transform:rotate(3deg)  translateX(2px); }
+  60% { transform:rotate(-2deg) translateX(-1px); }
+  80% { transform:rotate(1deg)  translateX(1px); }
 }
 @keyframes mamaJump {
-  0%, 100% { transform: translateY(0) scale(1); }
-  35% { transform: translateY(-15px) scale(1.06); }
-  65% { transform: translateY(-4px) scale(0.97); }
+  0%,100% { transform:translateY(0) scale(1); }
+  35% { transform:translateY(-14px) scale(1.05); }
+  65% { transform:translateY(-3px)  scale(0.98); }
 }
 @keyframes sparkPop {
-  0% { transform: scale(0) rotate(0); opacity: 1; }
-  100% { transform: scale(1.4) rotate(200deg); opacity: 0; }
+  0%   { transform:scale(0) rotate(0);    opacity:1; }
+  100% { transform:scale(1.3) rotate(180deg); opacity:0; }
 }
 @keyframes confettiFall {
-  0% { transform: translateY(-10px) rotate(0); opacity: 1; }
-  100% { transform: translateY(110px) rotate(500deg); opacity: 0; }
+  0%   { transform:translateY(-10px) rotate(0);    opacity:1; }
+  100% { transform:translateY(120px) rotate(500deg); opacity:0; }
 }
 @keyframes slotPop {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.18); }
-  70% { transform: scale(0.96); }
-  100% { transform: scale(1.06); }
+  0%   { transform:scale(1); }
+  40%  { transform:scale(1.08); }
+  70%  { transform:scale(0.97); }
+  100% { transform:scale(1.03); }
 }
- 
-.slot-pop { animation: slotPop 0.45s cubic-bezier(.34,1.56,.64,1) forwards; }
-.mama-float { animation: mamaFloat 3s ease-in-out infinite; }
-.mama-cook { animation: mamaCook 1.2s ease-in-out infinite; }
- 
+@keyframes pulseRing {
+  0%   { transform:scale(0.85); opacity:0.6; }
+  100% { transform:scale(1.6);  opacity:0; }
+}
+@keyframes shimmer {
+  0%   { background-position: 300%; }
+  100% { background-position: -300%; }
+}
+@keyframes slideUp {
+  from { transform:translateY(44px); opacity:0; }
+  to   { transform:translateY(0);    opacity:1; }
+}
+@keyframes fadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+@keyframes zoomIn {
+  from { transform:scale(0.88); opacity:0; }
+  to   { transform:scale(1);    opacity:1; }
+}
+@keyframes cheerArm {
+  0%,100% { transform:rotate(0); }
+  50%      { transform:rotate(-13deg); }
+}
+@keyframes bounceIn {
+  0%   { transform:scale(0.7); opacity:0; }
+  60%  { transform:scale(1.1); opacity:1; }
+  100% { transform:scale(1); }
+}
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(245,200,66,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(245,200,66,0); }
+}
+@keyframes slide-in-right {
+  from { transform:translateX(12px); opacity:0; }
+  to   { transform:translateX(0);    opacity:1; }
+}
+
+/* ── UTILITY CLASSES ── */
+.mama-float      { animation: mamaFloat 3s ease-in-out infinite; }
+.mama-cook       { animation: mamaCook 1.2s ease-in-out infinite; }
+.mama-shock      { animation: mamaShock 2.2s ease-in-out infinite; }
+.mama-jump       { animation: mamaJump 0.9s ease-in-out infinite; }
+.mama-wave-arm   { transform-origin:50% 100%; animation:mamaWave 2s ease-in-out infinite; }
+.mama-blink      { transform-origin:50% 50%; animation:mamaBlink 4.2s ease-in-out infinite; }
+.mama-stir-arm   { animation:mamaStir 1.1s ease-in-out infinite; }
+.mama-steam-a    { animation:steamRise 1.4s ease-in-out infinite; }
+.mama-steam-b    { animation:steamRise 1.4s .35s ease-in-out infinite; }
+.mama-steam-c    { animation:steamRise 1.4s .70s ease-in-out infinite; }
+.mama-sp1        { transform-origin:50% 50%; animation:sparkPop 1.6s ease-out infinite; }
+.mama-sp2        { transform-origin:50% 50%; animation:sparkPop 1.6s .3s  ease-out infinite; }
+.mama-sp3        { transform-origin:50% 50%; animation:sparkPop 1.6s .6s  ease-out infinite; }
+.mama-sp4        { transform-origin:50% 50%; animation:sparkPop 1.6s .9s  ease-out infinite; }
+.mama-cheer-larm { transform-origin:22px 20px; animation:cheerArm .9s ease-in-out infinite; }
+.mama-cheer-rarm { transform-origin:8px 20px;  animation:cheerArm .9s ease-in-out infinite reverse; }
+.pulse-ring1     { transform-origin:50% 50%; animation:pulseRing 1.6s ease-out infinite; }
+.pulse-ring2     { transform-origin:50% 50%; animation:pulseRing 1.6s .6s ease-out infinite; }
+.slot-pop        { animation:slotPop .45s cubic-bezier(.34,1.56,.64,1) forwards; }
+.bounce-in       { animation:bounceIn .4s cubic-bezier(.34,1.4,.64,1) both; }
+.slide-in        { animation:slide-in-right .3s ease both; }
+.glow-btn        { animation:glow-pulse 2s ease-in-out infinite; }
+.skel {
+  background:linear-gradient(90deg,var(--paper) 25%,var(--border) 50%,var(--paper) 75%);
+  background-size:300%;
+  border-radius:10px;
+  animation:shimmer 1.5s infinite;
+}
+
+/* ── RETRO COMPONENTS ── */
+.retro-card {
+  background:var(--white);
+  border:2px solid var(--navy);
+  border-radius:18px;
+  box-shadow:var(--shadow-md);
+}
+.retro-btn {
+  border:2px solid var(--navy);
+  border-radius:12px;
+  box-shadow:var(--shadow-sm);
+  font-family:'Nunito',sans-serif;
+  font-weight:800;
+  cursor:pointer;
+  transition:transform .1s,box-shadow .1s;
+  outline:none;
+}
+.retro-btn:active {
+  transform:translate(2px,3px);
+  box-shadow:0 0 0 var(--navy);
+}
+
+/* ── SLOT HOVER ── */
+.slot-hover {
+  transition:transform .18s,box-shadow .18s,background .18s;
+}
+.slot-hover:hover {
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-md) !important;
+}

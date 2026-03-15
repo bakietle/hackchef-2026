@@ -1,10 +1,9 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.deps import get_current_user
 from app.models.users import User
 from app.models.meal_plans import MealPlan
 from app.models.meal_plan_items import MealPlanItem
@@ -15,7 +14,21 @@ from app.models.shopping_list_items import ShoppingListItem
 router = APIRouter(prefix="/shopping-list", tags=["Shopping List"])
 
 
-def _get_owned_meal_plan(meal_plan_id: UUID, user_id: UUID, db: Session) -> MealPlan:
+def get_user_from_header(
+    x_user_id: str | None = Header(default=None, alias="X-User-ID"),
+    db: Session = Depends(get_db),
+) -> User:
+    if not x_user_id:
+        raise HTTPException(status_code=401, detail="Missing X-User-ID header.")
+
+    user = db.query(User).filter(User.id == x_user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    return user
+
+
+def _get_owned_meal_plan(meal_plan_id: UUID, user_id, db: Session) -> MealPlan:
     meal_plan = (
         db.query(MealPlan)
         .filter(
@@ -52,7 +65,7 @@ def _extract_ingredient_name(raw_ingredient) -> str:
 @router.post("/{meal_plan_id}")
 def generate_shopping_list(
     meal_plan_id: UUID,
-    user: User = Depends(get_current_user),
+    user: User = Depends(get_user_from_header),
     db: Session = Depends(get_db),
 ):
     meal_plan = _get_owned_meal_plan(meal_plan_id, user.id, db)
@@ -68,9 +81,13 @@ def generate_shopping_list(
         db.add(shopping_list)
         db.flush()
     else:
-        db.query(ShoppingListItem).filter(
-            ShoppingListItem.shopping_list_id == shopping_list.id
-        ).delete(synchronize_session=False)
+        existing_items = (
+            db.query(ShoppingListItem)
+            .filter(ShoppingListItem.shopping_list_id == shopping_list.id)
+            .all()
+        )
+        for item in existing_items:
+            db.delete(item)
 
     meal_items = (
         db.query(MealPlanItem)
@@ -86,12 +103,14 @@ def generate_shopping_list(
         if not recipe:
             continue
 
-        for ingredient in recipe.ingredients:
+        ingredients = recipe.ingredients or []
+
+        for ingredient in ingredients:
             ingredient_name = _extract_ingredient_name(ingredient)
             if not ingredient_name:
                 continue
 
-            normalized = ingredient_name.lower()
+            normalized = ingredient_name.strip().lower()
             if normalized in seen_ingredients:
                 continue
 
@@ -104,9 +123,9 @@ def generate_shopping_list(
             db.add(list_item)
             created_items.append(list_item)
 
-    db.commit()
+    db.flush()
 
-    return {
+    response = {
         "shopping_list_id": str(shopping_list.id),
         "meal_plan_id": str(meal_plan.id),
         "items": [
@@ -119,11 +138,14 @@ def generate_shopping_list(
         ],
     }
 
+    db.commit()
+    return response
+
 
 @router.get("/{meal_plan_id}")
 def get_shopping_list(
     meal_plan_id: UUID,
-    user: User = Depends(get_current_user),
+    user: User = Depends(get_user_from_header),
     db: Session = Depends(get_db),
 ):
     meal_plan = _get_owned_meal_plan(meal_plan_id, user.id, db)
@@ -165,7 +187,7 @@ def get_shopping_list(
 @router.patch("/item/{item_id}")
 def toggle_item(
     item_id: UUID,
-    user: User = Depends(get_current_user),
+    user: User = Depends(get_user_from_header),
     db: Session = Depends(get_db),
 ):
     item = (

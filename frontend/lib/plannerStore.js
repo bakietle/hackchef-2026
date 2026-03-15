@@ -1,86 +1,125 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { RECIPES } from './data'
+import { clearStoredUserId } from './storage'
+
+const initialStats = {
+  mealsCooked: 0,
+  weeksPlanned: 0,
+  moneySaved: 0,
+  cuisinesTried: [],
+}
 
 export const usePlannerStore = create(
   persist(
-    (set, get) => ({
-      // ── User ──
+    (set) => ({
+      userId: '',
       userName: '',
-      setUserName: (name) => set({ userName: name }),
+      setUserId: (userId) => set({ userId }),
+      setUserName: (userName) => set({ userName }),
+      setUserSession: ({ userId, userName }) => set({ userId, userName }),
 
-      // ── Week mode ──
       weekMode: 'glow',
-      setWeekMode: (mode) => set({ weekMode: mode }),
+      setWeekMode: (weekMode) => set({ weekMode }),
 
-      // ── Recipes (generated) ──
+      currentRequestId: '',
+      currentMealPlanId: '',
       recipes: [],
       setMealPlan: (recipes) => set({ recipes }),
+      setCurrentRequestId: (currentRequestId) => set({ currentRequestId }),
+      setCurrentMealPlanId: (currentMealPlanId) => set({ currentMealPlanId }),
 
-      // ── Planner: { 'Monday': { breakfast: recipeObj, lunch: recipeObj, ... } } ──
       assigned: {},
       assignMeal: (day, slot, recipe) =>
-        set(s => ({
+        set((state) => ({
           assigned: {
-            ...s.assigned,
-            [day]: { ...(s.assigned[day] || {}), [slot]: recipe }
-          }
+            ...state.assigned,
+            [day]: { ...(state.assigned[day] || {}), [slot]: recipe },
+          },
         })),
       removeMeal: (day, slot) =>
-        set(s => {
-          const d = { ...(s.assigned[day] || {}) }
-          delete d[slot]
-          return { assigned: { ...s.assigned, [day]: d } }
+        set((state) => {
+          const nextDay = { ...(state.assigned[day] || {}) }
+          delete nextDay[slot]
+          return {
+            assigned: {
+              ...state.assigned,
+              [day]: nextDay,
+            },
+          }
         }),
       clearWeek: () => set({ assigned: {} }),
 
-      // ── Saved recipes ──
       savedRecipes: [],
       toggleSaved: (id) =>
-        set(s => ({
-          savedRecipes: s.savedRecipes.includes(id)
-            ? s.savedRecipes.filter(x => x !== id)
-            : [...s.savedRecipes, id]
+        set((state) => ({
+          savedRecipes: state.savedRecipes.includes(id)
+            ? state.savedRecipes.filter((item) => item !== id)
+            : [...state.savedRecipes, id],
         })),
 
-      // ── Shopping list ──
       shopItems: [],
-      setShopItems: (items) => set({ shopItems: items }),
+      setShopItems: (shopItems) => set({ shopItems }),
       toggleShopItem: (id) =>
-        set(s => ({
-          shopItems: s.shopItems.map(i => i.id === id ? { ...i, done: !i.done } : i)
+        set((state) => ({
+          shopItems: state.shopItems.map((item) =>
+            item.id === id ? { ...item, done: !item.done } : item
+          ),
         })),
 
-      // ── Profile / stats ──
-      stats: {
-        mealsCooked: 0,
-        weeksPlanned: 0,
-        moneySaved: 0,
-        cuisinesTried: [],
-      },
+      stats: initialStats,
       incrementMealsCooked: () =>
-        set(s => ({ stats: { ...s.stats, mealsCooked: s.stats.mealsCooked + 1 } })),
+        set((state) => ({
+          stats: {
+            ...state.stats,
+            mealsCooked: state.stats.mealsCooked + 1,
+          },
+        })),
       completeWeek: () =>
-        set(s => ({ stats: { ...s.stats, weeksPlanned: s.stats.weeksPlanned + 1 } })),
+        set((state) => ({
+          stats: {
+            ...state.stats,
+            weeksPlanned: state.stats.weeksPlanned + 1,
+          },
+        })),
 
-      // ── Dietary preferences ──
       dietary: [],
-      setDietary: (d) => set({ dietary: d }),
+      setDietary: (dietary) => set({ dietary }),
 
-      // ── Notification seen ──
       notifSeen: false,
       setNotifSeen: () => set({ notifSeen: true }),
+
+      reset: () =>
+        set(() => {
+          clearStoredUserId()
+          return {
+            userId: '',
+            userName: '',
+            currentRequestId: '',
+            currentMealPlanId: '',
+            recipes: [],
+            assigned: {},
+            savedRecipes: [],
+            shopItems: [],
+            stats: initialStats,
+            dietary: [],
+            notifSeen: false,
+          }
+        }),
     }),
     {
       name: 'nomster-storage',
       partialize: (state) => ({
+        userId: state.userId,
         userName: state.userName,
         weekMode: state.weekMode,
+        currentRequestId: state.currentRequestId,
+        currentMealPlanId: state.currentMealPlanId,
         assigned: state.assigned,
         savedRecipes: state.savedRecipes,
         shopItems: state.shopItems,
         stats: state.stats,
         dietary: state.dietary,
+        notifSeen: state.notifSeen,
       }),
     }
   )

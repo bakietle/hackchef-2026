@@ -81,11 +81,13 @@ def generate_shopping_list(
         db.add(shopping_list)
         db.flush()
     else:
-        (
+        existing_items = (
             db.query(ShoppingListItem)
             .filter(ShoppingListItem.shopping_list_id == shopping_list.id)
-            .delete(synchronize_session=False)
+            .all()
         )
+        for item in existing_items:
+            db.delete(item)
 
     meal_items = (
         db.query(MealPlanItem)
@@ -108,7 +110,7 @@ def generate_shopping_list(
             if not ingredient_name:
                 continue
 
-            normalized = ingredient_name.lower()
+            normalized = ingredient_name.strip().lower()
             if normalized in seen_ingredients:
                 continue
 
@@ -121,9 +123,9 @@ def generate_shopping_list(
             db.add(list_item)
             created_items.append(list_item)
 
-    db.commit()
+    db.flush()
 
-    return {
+    response = {
         "shopping_list_id": str(shopping_list.id),
         "meal_plan_id": str(meal_plan.id),
         "items": [
@@ -135,6 +137,9 @@ def generate_shopping_list(
             for item in created_items
         ],
     }
+
+    db.commit()
+    return response
 
 
 @router.get("/{meal_plan_id}")

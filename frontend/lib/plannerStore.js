@@ -14,6 +14,7 @@ export const usePlannerStore = create(
     (set) => ({
       userId: '',
       userName: '',
+
       setUserId: (userId) => set({ userId }),
       setUserName: (userName) => set({ userName }),
       setUserSession: ({ userId, userName }) => set({ userId, userName }),
@@ -24,22 +25,35 @@ export const usePlannerStore = create(
       currentRequestId: '',
       currentMealPlanId: '',
       recipes: [],
-      setMealPlan: (recipes) => set({ recipes }),
+
+      setMealPlan: (recipes) =>
+        set({
+          recipes,
+          assigned: {},
+          currentMealPlanId: '',
+        }),
+
       setCurrentRequestId: (currentRequestId) => set({ currentRequestId }),
       setCurrentMealPlanId: (currentMealPlanId) => set({ currentMealPlanId }),
 
       assigned: {},
+
       assignMeal: (day, slot, recipe) =>
         set((state) => ({
           assigned: {
             ...state.assigned,
-            [day]: { ...(state.assigned[day] || {}), [slot]: recipe },
+            [day]: {
+              ...(state.assigned[day] || {}),
+              [slot]: recipe,
+            },
           },
         })),
+
       removeMeal: (day, slot) =>
         set((state) => {
           const nextDay = { ...(state.assigned[day] || {}) }
           delete nextDay[slot]
+
           return {
             assigned: {
               ...state.assigned,
@@ -47,6 +61,7 @@ export const usePlannerStore = create(
             },
           }
         }),
+
       clearWeek: () => set({ assigned: {} }),
 
       savedRecipes: [],
@@ -67,6 +82,7 @@ export const usePlannerStore = create(
         })),
 
       stats: initialStats,
+
       incrementMealsCooked: () =>
         set((state) => ({
           stats: {
@@ -74,6 +90,7 @@ export const usePlannerStore = create(
             mealsCooked: state.stats.mealsCooked + 1,
           },
         })),
+
       completeWeek: () =>
         set((state) => ({
           stats: {
@@ -94,6 +111,7 @@ export const usePlannerStore = create(
           return {
             userId: '',
             userName: '',
+            weekMode: 'glow',
             currentRequestId: '',
             currentMealPlanId: '',
             recipes: [],
@@ -113,8 +131,6 @@ export const usePlannerStore = create(
         userName: state.userName,
         weekMode: state.weekMode,
         currentRequestId: state.currentRequestId,
-        currentMealPlanId: state.currentMealPlanId,
-        assigned: state.assigned,
         savedRecipes: state.savedRecipes,
         shopItems: state.shopItems,
         stats: state.stats,

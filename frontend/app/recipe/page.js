@@ -13,6 +13,8 @@ import {
 } from '@/components/Icons'
 import NomsterLogo from '@/components/NomsterLogo'
 import { MamaHappy } from '@/components/mama/MamaVariants'
+import NotifBanner from '@/components/NotifBanner'
+import NomsterLogo from '@/components/NomsterLogo'
 
 function NutriTag({ tag }) {
   const map = {
@@ -499,6 +501,7 @@ export default function RecipePage() {
               {mode.name} mode · {all.length} recipes · tap for full recipe
             </div>
           </div>
+          <NomsterLogo size="sm" animate={false}/>
         </div>
       </div>
 

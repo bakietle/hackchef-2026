@@ -389,6 +389,16 @@ export default function PlannerPage() {
       ))}
     </div>
   )
+}
+
+export default function PlannerPage() {
+  const router = useRouter()
+  const { weekMode, assigned, clearWeek } = usePlannerStore()
+  const mode = WEEK_MODES.find(m => m.key === weekMode) || WEEK_MODES[0]
+  const [openDay, setOpenDay] = useState(null)
+
+  const totalMeals  = Object.values(assigned).reduce((a, d) => a + Object.keys(d || {}).length, 0)
+  const daysPlanned = Object.keys(assigned).filter(d => Object.keys(assigned[d] || {}).length > 0).length
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--cream)', display: 'flex', flexDirection: 'column', paddingBottom: 80 }}>
@@ -438,6 +448,7 @@ export default function PlannerPage() {
               {totalAssigned} meal{totalAssigned !== 1 ? 's' : ''} planned this week
             </div>
           </div>
+          <NomsterLogo size="sm" animate/>
         </div>
 
         {error && (
@@ -834,7 +845,7 @@ export default function PlannerPage() {
         />
       )}
 
-      <NavBar />
+      <NavBar/>
     </div>
   )
 }

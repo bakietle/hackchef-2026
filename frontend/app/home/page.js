@@ -141,7 +141,33 @@ function toModalRecipe(recipe, weekMode) {
   }
 }
 
-function RecipeModal({ recipe, onClose, modeColor, saved, onToggleSave }) {
+// Get Mon-indexed today (0=Mon … 6=Sun)
+function getTodayIdx() {
+  const d = new Date().getDay() // 0=Sun,1=Mon...6=Sat
+  return d === 0 ? 6 : d - 1
+}
+
+// Generate the 7 real dates starting from this Monday
+function getWeekDates() {
+  const today    = new Date()
+  const todayIdx = getTodayIdx()
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(today)
+    d.setDate(today.getDate() - todayIdx + i)
+    return d
+  })
+}
+
+function fmtDate(d) {
+  return d.getDate()
+}
+
+function fmtMonth(d) {
+  return d.toLocaleString('en-AU', { month: 'short' })
+}
+
+// ── Recipe modal (day popup → recipe detail) ──────────────────
+function RecipeModal({ recipe, onClose, mc, saved, onSave }) {
   const [fw, setFw] = useState(0)
 
   useEffect(() => {
@@ -536,6 +562,7 @@ function RecipeModal({ recipe, onClose, modeColor, saved, onToggleSave }) {
   )
 }
 
+// ── Day popup (from week grid) ────────────────────────────────
 function DayPopup({ day, meals, onClose, onOpenRecipe }) {
   return (
     <div
@@ -699,6 +726,29 @@ function DayPopup({ day, meals, onClose, onOpenRecipe }) {
   )
 }
 
+// ── NavBar ─────────────────────────────────────────────────────
+function NavBar() {
+  const router = useRouter()
+  return (
+    <div style={{ position:'fixed', bottom:0, left:0, right:0, display:'flex', justifyContent:'space-around', padding:'10px 0 20px', borderTop:'2px solid var(--navy)', background:'var(--white)', zIndex:50 }}>
+      {[
+        { label:'home',    path:'/home',    Icon:IconHome,     active:true  },
+        { label:'planner', path:'/planner', Icon:IconCalendar, active:false },
+        { label:'grocery', path:'/grocery', Icon:IconCart,     active:false },
+        { label:'saved',   path:'/saved',   Icon:IconHeart,    active:false },
+        { label:'profile', path:'/profile', Icon:IconProfile,  active:false },
+      ].map(({ label, path, Icon, active }) => (
+        <button key={label} onClick={() => router.push(path)}
+          style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2, cursor:'pointer', border:'none', background:'none', fontFamily:'Nunito, sans-serif', fontWeight:800, fontSize:9, color:active?'var(--navy)':'var(--muted)', padding:'0 8px', opacity:active?1:0.45 }}>
+          <Icon size={22} color={active?'var(--navy)':'var(--muted)'}/>
+          {label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+// ── MAIN ───────────────────────────────────────────────────────
 export default function HomePage() {
   const router = useRouter()
 
@@ -733,6 +783,7 @@ export default function HomePage() {
 
   const hasPlan = !!homeData.meal_plan
 
+  // Rotate tips
   useEffect(() => {
     const iv = setInterval(() => setTipIdx((i) => (i + 1) % FOOD_TIPS.length), 8000)
     return () => clearInterval(iv)
@@ -1051,6 +1102,28 @@ export default function HomePage() {
               />
             </svg>
           </div>
+
+          {modeOpen && (
+            <div style={{ position:'absolute', top:'calc(100% + 6px)', left:0, right:0, background:'var(--white)', border:'2px solid var(--navy)', borderRadius:13, zIndex:30, boxShadow:'var(--shadow-md)', overflow:'hidden', animation:'bounceIn .2s' }}>
+              {WEEK_MODES.map((m, i) => (
+                <div key={m.key}
+                  onClick={() => { setWeekMode(m.key); setModeOpen(false) }}
+                  style={{
+                    display:'flex', alignItems:'center', gap:10, padding:'10px 13px',
+                    cursor:'pointer', background:m.key===weekMode ? `${m.color}25` : 'transparent',
+                    borderBottom: i < WEEK_MODES.length-1 ? '1px solid var(--border)' : 'none',
+                    transition:'background .12s',
+                  }}>
+                  <div style={{ width:30, height:30, borderRadius:8, background:m.color, border:`2px solid ${m.key===weekMode?'var(--navy)':'transparent'}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, flexShrink:0 }}>{m.emoji}</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontFamily:'Nunito, sans-serif', fontSize:13, fontWeight:800, color:'var(--navy)' }}>{m.name}</div>
+                    <div style={{ fontSize:11, color:'var(--muted)', fontWeight:600 }}>{m.desc}</div>
+                  </div>
+                  {m.key === weekMode && <div style={{ width:18, height:18, borderRadius:'50%', background:m.color, border:'2px solid var(--navy)', display:'flex', alignItems:'center', justifyContent:'center' }}><IconCheck size={9} color="var(--navy)"/></div>}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div
@@ -1388,6 +1461,7 @@ export default function HomePage() {
         <div style={{ height: 20 }} />
       </div>
 
+      {/* ── POPUPS ── */}
       {dayPopup && !recipePopup && (
         <DayPopup
           day={dayPopup.day}

@@ -179,6 +179,7 @@ export default function InputPage() {
           </div>
           <span style={{ fontSize: 10, color: 'var(--muted)', fontWeight: 700 }}>{mode.name}</span>
         </div>
+        <NomsterLogo size="sm" animate={false}/>
       </div>
 
       <div style={{ padding: '12px 20px', display: 'flex', gap: 10, alignItems: 'center' }}>

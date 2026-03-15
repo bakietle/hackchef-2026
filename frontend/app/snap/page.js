@@ -1,4 +1,5 @@
 'use client'
+import NomsterLogo from '@/components/NomsterLogo'
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { usePlannerStore } from '@/lib/plannerStore'
@@ -84,7 +85,7 @@ export default function SnapFridgePage() {
           style={{ padding:'8px 12px', background:'var(--white)', color:'var(--navy)', fontSize:13, display:'flex', alignItems:'center', gap:4 }}>
           ← back
         </button>
-        <div>
+        <div style={{ flex:1 }}>
           <h2 style={{ fontFamily:'Fraunces, serif', fontSize:18, fontWeight:900, color:'var(--navy)' }}>
             snap ur fridge 📸
           </h2>
@@ -92,6 +93,7 @@ export default function SnapFridgePage() {
             AI detects your ingredients instantly
           </div>
         </div>
+        <NomsterLogo size="sm" animate/>
       </div>
 
       <div style={{ flex:1, overflowY:'auto', padding:'20px' }}>
